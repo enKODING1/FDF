@@ -1,0 +1,47 @@
+CC = cc -g
+CFLAGS = -Wall -Wextra -Werror
+NAME = fdf
+
+SOURCES = ./main.c
+OBJECTS = $(SOURCES:.c=.o)
+
+LIBFT_DIR = ./libft/
+GNL_DIR = ./get_next_line/
+MINILIBX_DIR = ./minilibx-linux/
+
+LIBFT_LIB = $(LIBFT_DIR)/libft.a
+GNL_LIB = $(GNL_DIR)/libgnl.a
+
+all: $(NAME)
+
+$(NAME): $(GNL_LIB) $(LIBFT_LIB) $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME) \
+		-I$(LIBFT_DIR) -I$(GNL_DIR) -I$(MINILIBX_DIR)	\
+		-L$(MINILIBX_DIR) -lmlx -lXext -lX11 \
+		-L$(LIBFT_DIR) -lft \
+		-L$(GNL_DIR) -lgnl
+
+$(GNL_LIB):
+	make -C $(GNL_DIR)
+
+$(LIBFT_LIB):
+	make -C $(LIBFT_DIR)
+	make bonus -C $(LIBFT_DIR)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ \
+		 -I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MINILIBX_DIR)
+
+clean:
+	make clean -C $(LIBFT_DIR)
+	make clean -C $(GNL_DIR)
+	rm -f $(OBJECTS)
+
+fclean: clean
+	make fclean -C $(LIBFT_DIR)
+	make fclean -C $(GNL_DIR)
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
