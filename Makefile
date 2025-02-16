@@ -1,5 +1,5 @@
-CC = cc -g
-CFLAGS = -Wall -Wextra -Werror
+CC = gcc -g
+# CFLAGS = -Wall -Wextra -Werror
 NAME = fdf
 
 SOURCES = ./main.c
@@ -15,7 +15,7 @@ GNL_LIB = $(GNL_DIR)/libgnl.a
 all: $(NAME)
 
 $(NAME): $(GNL_LIB) $(LIBFT_LIB) $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME) \
+	$(CC) $(CFLAGS) $(OBJECTS) -lm -o $(NAME) \
 		-I$(LIBFT_DIR) -I$(GNL_DIR) -I$(MINILIBX_DIR)	\
 		-L$(MINILIBX_DIR) -lmlx -lXext -lX11 \
 		-L$(LIBFT_DIR) -lft \
