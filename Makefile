@@ -2,12 +2,12 @@ CC = gcc -g
 # CFLAGS = -Wall -Wextra -Werror
 NAME = fdf
 
-SOURCES = ./main.c
+SOURCES = ./src/main.c
 OBJECTS = $(SOURCES:.c=.o)
 
-LIBFT_DIR = ./libft/
-GNL_DIR = ./get_next_line/
-MINILIBX_DIR = ./minilibx-linux/
+LIBFT_DIR = ./lib/libft/
+GNL_DIR = ./lib/get_next_line/
+MINILIBX_DIR = ./lib/minilibx-linux/
 
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 GNL_LIB = $(GNL_DIR)/libgnl.a
@@ -16,7 +16,7 @@ all: $(NAME)
 
 $(NAME): $(GNL_LIB) $(LIBFT_LIB) $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -lm -o $(NAME) \
-		-I$(LIBFT_DIR) -I$(GNL_DIR) -I$(MINILIBX_DIR)	\
+		-I$(LIBFT_DIR) -I$(GNL_DIR) -I$(MINILIBX_DIR)\
 		-L$(MINILIBX_DIR) -lmlx -lXext -lX11 \
 		-L$(LIBFT_DIR) -lft \
 		-L$(GNL_DIR) -lgnl

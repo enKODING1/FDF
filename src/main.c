@@ -90,16 +90,16 @@ void set_isometric_projection(t_pos *pos)
         // rotation_y(pos, 0);
 }
 
-void	show_lst(void *pos)
-{
-    if (((t_pos *)pos)->x == 0)
-    {
-        printf("\n");
-    }
-	printf("[%d, %d, %d]", ((t_pos *)pos)->x, ((t_pos *)pos)->y,
-		((t_pos *)pos)->z);
-    // printf("%d ", ((t_pos *)pos)->z);
-}
+// void	show_lst(void *pos)
+// {
+//     if (((t_pos *)pos)->x == 0)
+//     {
+//         printf("\n");
+//     }
+// 	printf("[%d, %d, %d]", ((t_pos *)pos)->x, ((t_pos *)pos)->y,
+// 		((t_pos *)pos)->z);
+//     // printf("%d ", ((t_pos *)pos)->z);
+// }
 
 int	main(int argc, char **argv)
 {
@@ -147,7 +147,7 @@ int	main(int argc, char **argv)
 	}
 	// ft_lstiter(lst, show_lst);
     // lst = stack->top;
-    int scale = 12;
+    int scale = 4;
     while(lst)
     {
         t_pos *pos;
@@ -158,12 +158,9 @@ int	main(int argc, char **argv)
         {
 			pos->x *= scale;
 			pos->y *= scale;
-			pos->z *= scale + 20;
+			pos->z *= scale + 6;
             set_isometric_projection(pos);
 	        mlx_pixel_put(mlx_ptr, win_ptr, (pos->x) + (500/2), (pos->y) + (500/2), 0xFF0000);
-	        // mlx_pixel_put(mlx_ptr, win_ptr, (pos->x*scale)+1 +(500/2), (pos->y*scale) + (500/2), 0xFF0000);
-	        // mlx_pixel_put(mlx_ptr, win_ptr, (pos->x*scale) +(500/2), (pos->y*scale) + 1 + (500/2), 0xFF0000);
-	        // mlx_pixel_put(mlx_ptr, win_ptr, (pos->x*scale) +(500/2) + 1, (pos->y*scale) + 1 + (500/2), 0xFF0000);
         }
         lst = lst->next;
     }
