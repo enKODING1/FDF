@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/get_next_line"
+                "${workspaceFolder}/lib/**",
+                "${workspaceFolder}/lib/get_next_line"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

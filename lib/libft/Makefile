@@ -1,5 +1,6 @@
-CC = gcc 
-CFLAGS = -Wall -Wextra -Werror
+CC = gcc -g
+# CFLAGS = -Wall -Wextra -Werror
+CFLAGS =
 NAME = libft.a
 NAME_BONUS = libft_bonus.a
 SOURCES = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \

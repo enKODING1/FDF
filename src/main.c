@@ -90,16 +90,76 @@ void set_isometric_projection(t_pos *pos)
         // rotation_y(pos, 0);
 }
 
-// void	show_lst(void *pos)
-// {
-//     if (((t_pos *)pos)->x == 0)
-//     {
-//         printf("\n");
-//     }
-// 	printf("[%d, %d, %d]", ((t_pos *)pos)->x, ((t_pos *)pos)->y,
-// 		((t_pos *)pos)->z);
-//     // printf("%d ", ((t_pos *)pos)->z);
-// }
+void	show_lst(void *pos)
+{
+    if (((t_pos *)pos)->x == 0)
+    {
+        printf("\n");
+    }
+	printf("[%d, %d, %d]", ((t_pos *)pos)->x, ((t_pos *)pos)->y,
+		((t_pos *)pos)->z);
+    // printf("%d ", ((t_pos *)pos)->z);
+}
+
+t_fdf **	create_map(int x, int y)
+{
+	int i;
+	t_fdf **map;
+
+	i = 0;
+	map = (t_fdf **)malloc(sizeof(t_fdf *) * y);
+	while(i < y)
+	{
+		map[i] = (t_fdf*)malloc(sizeof(t_fdf) * x);
+		i++;
+	}
+
+	return map;
+}
+
+void	stack_to_map(t_stack *stack, t_fdf **map)
+{
+	int i;
+	int j;
+	t_list *lst;	
+
+	i = 0;
+	j = 0;
+	lst = stack->top;
+	while(i < stack->max_y)
+	{
+		j = 0;
+		while(j < stack->max_x)
+		{
+			map[i][j].pos.x = ((t_pos *)lst->content)->x;
+			map[i][j].pos.y = ((t_pos *)lst->content)->y;
+			map[i][j].pos.z = ((t_pos *)lst->content)->z;
+			lst = lst->next;
+			j++;
+		}
+		i++;
+	}
+}
+
+void show_map(t_fdf **map, int x, int y)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while(i < y)
+	{
+		j = 0;
+		while(j < x)
+		{
+			printf("[%d, %d, %d] ", map[i][j].pos.x, map[i][j].pos.y, map[i][j].pos.z);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+}
 
 int	main(int argc, char **argv)
 {
@@ -110,9 +170,10 @@ int	main(int argc, char **argv)
 	t_list	*lst;
 	t_stack	*stack;
 	t_pos	*data;
-	int		y;
+	int		j;
 	int		i;
 	char	*temp;
+	t_fdf	**map;
 
 	if (argc < 2 || argc > 2)
 		return (0);
@@ -125,7 +186,7 @@ int	main(int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 800, 800, "title");
-	y = 0;
+	j = 0;
 	while (1)
 	{
 		read_line = get_next_line(fd);
@@ -136,34 +197,46 @@ int	main(int argc, char **argv)
 		while (pos_str[i] != NULL)
 		{
 			temp = ft_strdup(pos_str[i]);
-			data = set_pos(i, y, ft_atoi(temp));
+			data = set_pos(i, j, ft_atoi(temp));
 			ft_lstadd_back(&lst, ft_lstnew(data));
 			// printf("pos: %d\n", ft_atoi(pos_str[i]));
 			i++;
 		}
+		stack->max_x = i;	
 		free(read_line);
 		// free(pos_str);
-		y++;
+		j++;
 	}
-	// ft_lstiter(lst, show_lst);
+	stack->max_y = j;
+	stack->top = lst;
+	// ft_lstiter(stack->top, show_lst);
     // lst = stack->top;
+	map = create_map(stack->max_x, stack->max_y);
+	
+	// ft_lstiter(stack->top, show_lst);
+	stack_to_map(stack, map);
+	show_map(map, stack->max_x,stack->max_y);
+
+
     int scale = 4;
-    while(lst)
+	i = 0;
+	j = 0;
+    while(i < stack->max_y)
     {
-        t_pos *pos;
-        pos = ((t_pos *)lst->content);
-        // printf("x:%d, y: %d\n", pos->x, pos->y);
-        // printf("hello\n");
-        // if (pos->z != 0)
-        {
+		j = 0;
+		while(j < stack->max_x)
+		{
+		    t_pos *pos;
+  		    pos = &map[i][j].pos;
 			pos->x *= scale;
 			pos->y *= scale;
 			pos->z *= scale + 6;
             set_isometric_projection(pos);
 	        mlx_pixel_put(mlx_ptr, win_ptr, (pos->x) + (500/2), (pos->y) + (500/2), 0xFF0000);
-        }
-        lst = lst->next;
-    }
+			j++;
+		}
+		i++;
+     }
 	mlx_loop(mlx_ptr);
 	return (0);
 }

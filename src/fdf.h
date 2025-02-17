@@ -11,6 +11,13 @@ typedef struct s_pos{
 
 typedef struct s_stack{
     t_list *top;
+    int max_x;
+    int max_y;
 } t_stack;
+
+typedef struct s_fdf{
+    t_pos pos;
+    int color;
+} t_fdf;
 
 #endif 
