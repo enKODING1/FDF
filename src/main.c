@@ -161,6 +161,226 @@ void show_map(t_fdf **map, int x, int y)
 	}
 }
 
+// void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
+// {
+// 	int dx;  
+// 	int dy;  
+// 	double m;  
+// 	int p;
+// 	int i;
+// 	int j;
+// 	int delta_x;
+// 	int delta_y;
+
+// 	dx = end.x - start.x;
+// 	dy = end.y - start.y;
+// 	m = (double)dy/(double)dx;
+// 	// p = 2*dx -dy;
+// 	i = 0;
+// 	j = 0;
+	
+// 	if (m <= 1)
+// 	{
+// 		p = 2*dy - dx;
+// 		while(dx != end.x || dy != end.y)	
+// 		{
+// 			delta_x = end.x - dx;
+// 			delta_y = end.y - dy;
+// 			if (p < 0)				
+// 			{
+// 				p = p + (2*delta_y);
+// 				dx++;
+// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
+// 			}else if(p >= 0)
+// 			{
+// 				p = p + (2 * (delta_y - delta_x));
+// 				dx++;	
+// 				dy++;
+// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
+// 			}
+// 		}
+// 	}else if (m > 1)
+// 	{
+// 		p = 2*dx - dy;
+// 		while(dx != end.x || dy != end.y)	
+// 		{
+// 			delta_x = end.x - dx;
+// 			delta_y = end.y - dy;
+// 			if (p < 0)
+// 			{
+// 				p = p + (2*delta_x);
+// 				dy++;
+// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
+// 			}else if(p >= 0)
+// 			{
+// 				p = p + (2 * (delta_x -delta_y));
+// 				dx++;
+// 				dy++;	
+// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
+// 			}
+// 		}
+// 	}
+// }
+
+void	set_scale(t_pos *pos, int scale)
+{
+	pos->x *= scale;
+	pos->y *= scale;
+	pos->z *= scale/6;
+}
+
+// void    draw_line(t_data *image, t_line line)
+// {
+//     int dx;
+//     int dy;
+//     int sx;
+//     int sy;
+//     int err;
+//     int e2;
+//     int c;
+//     if (line.color == -1)
+//         line.color = 0x00FFFF;
+//     dx = abs(line.x2 - line.x1);
+//     dy = -abs(line.y2 - line.y1);
+//     if (line.x1 < line.x2)
+//         sx = 1;
+//     else
+//         sx = -1;
+//     if (line.y1 < line.y2)
+//         sy = 1;
+//     else
+//         sy = -1;
+//     err = dx + dy;
+//     while (1)
+//     {
+//         if (line.x1 >= 0 && line.x1 < 1920 && line.y1 >= 0 && line.y1 < 1080)
+//             my_mlx_pixel_put(image, line.x1, line.y1, line.color);
+//         else
+//             break ;
+//         if (line.x1 == line.x2 && line.y1 == line.y2)
+//             break ;
+//         e2 = 2 * err;
+//         if (e2 >= dy)
+//         {
+//             err += dy;
+//             line.x1 += sx;
+//         }
+//         if (e2 <= dx)
+//         {
+//             err += dx;
+//             line.y1 += sy;
+//         }
+//     }
+// }
+
+
+
+void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
+{
+    int dx;
+    int dy;
+    int sx;
+    int sy;
+    int err;
+    int e2;
+    int x;
+    int y;
+    int color = 0x00FFFF;  // 기본 색상 설정
+
+    dx = abs(end.x - start.x);
+    dy = -abs(end.y - start.y);
+    
+    if (start.x < end.x)
+        sx = 1;
+    else
+        sx = -1;
+    
+    if (start.y < end.y)
+        sy = 1;
+    else
+        sy = -1;
+    
+    err = dx + dy;
+    x = start.x;
+    y = start.y;
+    
+    while (1)
+    {
+        // // 화면 범위 검사 (예시로 1920x1080 사용, 오프셋 +300 적용)
+        // if (x >= 0 && x < 1920 && y >= 0 && y < 1080)
+            mlx_pixel_put(mlx_ptr, win_ptr, x + 300, y + 300, color);
+        // else
+        //     break;
+        
+        if (x == end.x && y == end.y)
+            break;
+        
+        e2 = 2 * err;
+        if (e2 >= dy)
+        {
+            err += dy;
+            x += sx;
+        }
+        if (e2 <= dx)
+        {
+            err += dx;
+            y += sy;
+        }
+    }
+}
+
+
+// void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
+// {
+// 	int dx;  
+// 	int dy;  
+// 	int x;
+// 	int y;
+// 	int p;
+
+// 	dx = end.x - start.x;
+// 	dy = end.y - start.y;
+// 	x = start.x;
+// 	y = start.y;
+// 	// p = 2*dx -dy;
+
+// 	if (abs(dy) <= abs(dx))
+// 	{
+// 		p = 2*dy - dx;
+// 		while(x < end.x)	
+// 		{
+// 			x++;
+// 			if (p < 0)				
+// 			{
+// 				p += 2 * dy ;
+// 			}else 
+// 			{
+// 				y++;
+// 				p += 2 * (dy-dx);
+// 			}
+// 			mlx_pixel_put(mlx_ptr, win_ptr, x + 300, y + 300, 0xFF0000);
+// 		}
+// 	}else 
+// 	{
+// 		p = 2*dx - dy;
+
+// 		while(y < end.y)	
+// 		{
+// 			y++;
+// 			if (p < 0)
+// 			{
+// 				p += 2*dx;
+// 			}else 
+// 			{
+// 				x++;
+// 				p += (2 * (dx-dy));
+// 			}
+
+// 			mlx_pixel_put(mlx_ptr, win_ptr, x + 300, y + 300, 0xFF0000);
+// 		}
+// 	}
+// }
+
 int	main(int argc, char **argv)
 {
 	int		fd;
@@ -185,7 +405,7 @@ int	main(int argc, char **argv)
     lst = NULL;
 	fd = open(argv[1], O_RDONLY);
 	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 800, 800, "title");
+	win_ptr = mlx_new_window(mlx_ptr, 1920, 1080, "title");
 	j = 0;
 	while (1)
 	{
@@ -217,8 +437,7 @@ int	main(int argc, char **argv)
 	stack_to_map(stack, map);
 	show_map(map, stack->max_x,stack->max_y);
 
-
-    int scale = 4;
+    int scale = 30;
 	i = 0;
 	j = 0;
     while(i < stack->max_y)
@@ -226,13 +445,30 @@ int	main(int argc, char **argv)
 		j = 0;
 		while(j < stack->max_x)
 		{
-		    t_pos *pos;
-  		    pos = &map[i][j].pos;
-			pos->x *= scale;
-			pos->y *= scale;
-			pos->z *= scale + 6;
-            set_isometric_projection(pos);
-	        mlx_pixel_put(mlx_ptr, win_ptr, (pos->x) + (500/2), (pos->y) + (500/2), 0xFF0000);
+		    t_pos pos;
+			t_pos next_pos;
+			t_pos bottom_pos;	
+
+  		    pos = map[i][j].pos;
+			//선긋기	
+			set_scale(&pos, scale);
+            set_isometric_projection(&pos);
+			
+			if (j < stack->max_x-1 )
+			{
+				next_pos = map[i][j+1].pos;
+				set_scale(&next_pos, scale);
+				set_isometric_projection(&next_pos);
+				draw_line(mlx_ptr, win_ptr, pos, next_pos);
+			}
+			if(i  < stack->max_y - 1)
+			{
+				bottom_pos = map[i+1][j].pos;
+				set_scale(&bottom_pos, scale);
+				set_isometric_projection(&bottom_pos);
+				draw_line(mlx_ptr, win_ptr, pos, bottom_pos);
+			}
+	        mlx_pixel_put(mlx_ptr, win_ptr, (pos.x) + 300, (pos.y) + 300, 0xFF0000);
 			j++;
 		}
 		i++;
