@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 #include "libft.h"
 #include "mlx.h"
 #include "mlx_int.h"
@@ -131,12 +131,14 @@ void	stack_to_map(t_stack *stack, t_fdf **map)
 		j = 0;
 		while(j < stack->max_x)
 		{
+			printf("[%d][%d], ", i, j);
 			map[i][j].pos.x = ((t_pos *)lst->content)->x;
 			map[i][j].pos.y = ((t_pos *)lst->content)->y;
 			map[i][j].pos.z = ((t_pos *)lst->content)->z;
 			lst = lst->next;
 			j++;
 		}
+		printf("\n");
 		i++;
 	}
 }
@@ -161,119 +163,12 @@ void show_map(t_fdf **map, int x, int y)
 	}
 }
 
-// void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
-// {
-// 	int dx;  
-// 	int dy;  
-// 	double m;  
-// 	int p;
-// 	int i;
-// 	int j;
-// 	int delta_x;
-// 	int delta_y;
-
-// 	dx = end.x - start.x;
-// 	dy = end.y - start.y;
-// 	m = (double)dy/(double)dx;
-// 	// p = 2*dx -dy;
-// 	i = 0;
-// 	j = 0;
-	
-// 	if (m <= 1)
-// 	{
-// 		p = 2*dy - dx;
-// 		while(dx != end.x || dy != end.y)	
-// 		{
-// 			delta_x = end.x - dx;
-// 			delta_y = end.y - dy;
-// 			if (p < 0)				
-// 			{
-// 				p = p + (2*delta_y);
-// 				dx++;
-// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
-// 			}else if(p >= 0)
-// 			{
-// 				p = p + (2 * (delta_y - delta_x));
-// 				dx++;	
-// 				dy++;
-// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
-// 			}
-// 		}
-// 	}else if (m > 1)
-// 	{
-// 		p = 2*dx - dy;
-// 		while(dx != end.x || dy != end.y)	
-// 		{
-// 			delta_x = end.x - dx;
-// 			delta_y = end.y - dy;
-// 			if (p < 0)
-// 			{
-// 				p = p + (2*delta_x);
-// 				dy++;
-// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
-// 			}else if(p >= 0)
-// 			{
-// 				p = p + (2 * (delta_x -delta_y));
-// 				dx++;
-// 				dy++;	
-// 				mlx_pixel_put(mlx_ptr, win_ptr, dx + 300, dy + 300, 0xFF0000);
-// 			}
-// 		}
-// 	}
-// }
-
 void	set_scale(t_pos *pos, int scale)
 {
 	pos->x *= scale;
 	pos->y *= scale;
 	pos->z *= scale/6;
 }
-
-// void    draw_line(t_data *image, t_line line)
-// {
-//     int dx;
-//     int dy;
-//     int sx;
-//     int sy;
-//     int err;
-//     int e2;
-//     int c;
-//     if (line.color == -1)
-//         line.color = 0x00FFFF;
-//     dx = abs(line.x2 - line.x1);
-//     dy = -abs(line.y2 - line.y1);
-//     if (line.x1 < line.x2)
-//         sx = 1;
-//     else
-//         sx = -1;
-//     if (line.y1 < line.y2)
-//         sy = 1;
-//     else
-//         sy = -1;
-//     err = dx + dy;
-//     while (1)
-//     {
-//         if (line.x1 >= 0 && line.x1 < 1920 && line.y1 >= 0 && line.y1 < 1080)
-//             my_mlx_pixel_put(image, line.x1, line.y1, line.color);
-//         else
-//             break ;
-//         if (line.x1 == line.x2 && line.y1 == line.y2)
-//             break ;
-//         e2 = 2 * err;
-//         if (e2 >= dy)
-//         {
-//             err += dy;
-//             line.x1 += sx;
-//         }
-//         if (e2 <= dx)
-//         {
-//             err += dx;
-//             line.y1 += sy;
-//         }
-//     }
-// }
-
-
 
 void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
 {
@@ -330,57 +225,6 @@ void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
 }
 
 
-// void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
-// {
-// 	int dx;  
-// 	int dy;  
-// 	int x;
-// 	int y;
-// 	int p;
-
-// 	dx = end.x - start.x;
-// 	dy = end.y - start.y;
-// 	x = start.x;
-// 	y = start.y;
-// 	// p = 2*dx -dy;
-
-// 	if (abs(dy) <= abs(dx))
-// 	{
-// 		p = 2*dy - dx;
-// 		while(x < end.x)	
-// 		{
-// 			x++;
-// 			if (p < 0)				
-// 			{
-// 				p += 2 * dy ;
-// 			}else 
-// 			{
-// 				y++;
-// 				p += 2 * (dy-dx);
-// 			}
-// 			mlx_pixel_put(mlx_ptr, win_ptr, x + 300, y + 300, 0xFF0000);
-// 		}
-// 	}else 
-// 	{
-// 		p = 2*dx - dy;
-
-// 		while(y < end.y)	
-// 		{
-// 			y++;
-// 			if (p < 0)
-// 			{
-// 				p += 2*dx;
-// 			}else 
-// 			{
-// 				x++;
-// 				p += (2 * (dx-dy));
-// 			}
-
-// 			mlx_pixel_put(mlx_ptr, win_ptr, x + 300, y + 300, 0xFF0000);
-// 		}
-// 	}
-// }
-
 int	main(int argc, char **argv)
 {
 	int		fd;
@@ -429,50 +273,53 @@ int	main(int argc, char **argv)
 	}
 	stack->max_y = j;
 	stack->top = lst;
+	printf("msp: %d, %d\n", stack->max_x, stack->max_y);
 	// ft_lstiter(stack->top, show_lst);
     // lst = stack->top;
 	map = create_map(stack->max_x, stack->max_y);
 	
 	// ft_lstiter(stack->top, show_lst);
 	stack_to_map(stack, map);
-	show_map(map, stack->max_x,stack->max_y);
+	// show_map(map, stack->max_x,stack->max_y);
 
     int scale = 30;
 	i = 0;
 	j = 0;
-    while(i < stack->max_y)
-    {
-		j = 0;
-		while(j < stack->max_x)
-		{
-		    t_pos pos;
-			t_pos next_pos;
-			t_pos bottom_pos;	
+    // while(i < stack->max_y)
+    // {
+	// 	j = 0;
+	// 	while(j < stack->max_x)
+	// 	{
+	// 	    t_pos pos;
+	// 		t_pos next_pos;
+	// 		t_pos bottom_pos;	
 
-  		    pos = map[i][j].pos;
-			//선긋기	
-			set_scale(&pos, scale);
-            set_isometric_projection(&pos);
+  	// 	    pos = map[i][j].pos;
+	// 		//선긋기	
+	// 		set_scale(&pos, scale);
+    //         set_isometric_projection(&pos);
 			
-			if (j < stack->max_x-1 )
-			{
-				next_pos = map[i][j+1].pos;
-				set_scale(&next_pos, scale);
-				set_isometric_projection(&next_pos);
-				draw_line(mlx_ptr, win_ptr, pos, next_pos);
-			}
-			if(i  < stack->max_y - 1)
-			{
-				bottom_pos = map[i+1][j].pos;
-				set_scale(&bottom_pos, scale);
-				set_isometric_projection(&bottom_pos);
-				draw_line(mlx_ptr, win_ptr, pos, bottom_pos);
-			}
-	        mlx_pixel_put(mlx_ptr, win_ptr, (pos.x) + 300, (pos.y) + 300, 0xFF0000);
-			j++;
-		}
-		i++;
-     }
+	// 		// if (j < stack->max_x-1 )
+	// 		// {
+	// 		// 	next_pos = map[i][j+1].pos;
+	// 		// 	set_scale(&next_pos, scale);
+	// 		// 	set_isometric_projection(&next_pos);
+	// 		// 	draw_line(mlx_ptr, win_ptr, pos, next_pos);
+	// 		// }
+	// 		// if(i  < stack->max_y - 1)
+	// 		// {
+	// 		// 	bottom_pos = map[i+1][j].pos;
+	// 		// 	set_scale(&bottom_pos, scale);
+	// 		// 	set_isometric_projection(&bottom_pos);
+	// 		// 	draw_line(mlx_ptr, win_ptr, pos, bottom_pos);
+	// 		// }
+	// 		printf("[%d][%d], ", i, j);
+	//         mlx_pixel_put(mlx_ptr, win_ptr, (pos.x) + 300, (pos.y) + 300, 0x00FFFF);
+	// 		j++;
+	// 	}
+	// 	printf("\n");
+	// 	i++;
+    //  }
 	mlx_loop(mlx_ptr);
 	return (0);
 }
