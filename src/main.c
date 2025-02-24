@@ -58,7 +58,7 @@ void    rotation_y(t_pos *pos, double theta)
 
         pos->x = (temp_x*cos(radian) + temp_z*sin(radian));
         pos->y = pos->y;
-		pos->z = -temp_x * sin(radian) + temp_z * cos(radian); // Corrected line
+		pos->z = -temp_x * sin(radian) + temp_z * cos(radian);
 }
 
 void    rotation_z(t_pos *pos, double theta)
@@ -224,6 +224,51 @@ void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
     }
 }
 
+// args
+
+int		valid_args(char **argv)
+{
+	int map_x_length;
+	// int map_y_length;			
+	int i;
+
+	map_x_length = get_map_x_length(argv[1]);
+	// map_y_length = get_map_y_length(argv);
+	i = 1;
+
+	while(argv[i])	
+	{
+		if (get_map_x_length(argv[i]) != map_x_length)	
+			return 0;
+		if ()
+	}
+
+	return 1;		
+}
+
+int		get_map_x_length(char *argv)
+{
+		int i;
+		
+		i = 0;
+		while(argv[i] != '\0')
+			i++;
+		return i;
+}
+
+int		get_map_y_length(char **argv)
+{
+		int i;
+
+		i = 0;
+		while(argv[i])
+			i++;
+
+		return i;
+}
+
+ 
+
 
 int	main(int argc, char **argv)
 {
@@ -241,85 +286,92 @@ int	main(int argc, char **argv)
 
 	if (argc < 2 || argc > 2)
 		return (0);
-	void *win_ptr;
-	stack = malloc(sizeof(t_stack));
-	if (!stack)
-		return (0);
-	stack->top = lst;
-    lst = NULL;
-	fd = open(argv[1], O_RDONLY);
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 1920, 1080, "title");
-	j = 0;
-	while (1)
+
+	if (valid_args(argv))
 	{
-		read_line = get_next_line(fd);
-		if (!read_line)
-			break ;
-		pos_str = ft_split(read_line, ' ');
-		i = 0;
-		while (pos_str[i] != NULL)
-		{
-			temp = ft_strdup(pos_str[i]);
-			data = set_pos(i, j, ft_atoi(temp));
-			ft_lstadd_back(&lst, ft_lstnew(data));
-			// printf("pos: %d\n", ft_atoi(pos_str[i]));
-			i++;
-		}
-		stack->max_x = i;	
-		free(read_line);
-		// free(pos_str);
-		j++;
+		return 0;	
 	}
-	stack->max_y = j;
-	stack->top = lst;
-	printf("msp: %d, %d\n", stack->max_x, stack->max_y);
-	// ft_lstiter(stack->top, show_lst);
-    // lst = stack->top;
-	map = create_map(stack->max_x, stack->max_y);
-	
-	// ft_lstiter(stack->top, show_lst);
-	stack_to_map(stack, map);
-	// show_map(map, stack->max_x,stack->max_y);
 
-    int scale = 30;
-	i = 0;
-	j = 0;
-    // while(i < stack->max_y)
-    // {
-	// 	j = 0;
-	// 	while(j < stack->max_x)
+
+	// void *win_ptr;
+	// stack = malloc(sizeof(t_stack));
+	// if (!stack)
+	// 	return (0);
+	// stack->top = lst;
+    // lst = NULL;
+	// fd = open(argv[1], O_RDONLY);
+	// mlx_ptr = mlx_init();
+	// win_ptr = mlx_new_window(mlx_ptr, 1920, 1080, "title");
+	// j = 0;
+	// while (1)
+	// {
+	// 	read_line = get_next_line(fd);
+	// 	if (!read_line)
+	// 		break ;
+	// 	pos_str = ft_split(read_line, ' ');
+	// 	i = 0;
+	// 	while (pos_str[i] != NULL)
 	// 	{
-	// 	    t_pos pos;
-	// 		t_pos next_pos;
-	// 		t_pos bottom_pos;	
-
-  	// 	    pos = map[i][j].pos;
-	// 		//선긋기	
-	// 		set_scale(&pos, scale);
-    //         set_isometric_projection(&pos);
-			
-	// 		// if (j < stack->max_x-1 )
-	// 		// {
-	// 		// 	next_pos = map[i][j+1].pos;
-	// 		// 	set_scale(&next_pos, scale);
-	// 		// 	set_isometric_projection(&next_pos);
-	// 		// 	draw_line(mlx_ptr, win_ptr, pos, next_pos);
-	// 		// }
-	// 		// if(i  < stack->max_y - 1)
-	// 		// {
-	// 		// 	bottom_pos = map[i+1][j].pos;
-	// 		// 	set_scale(&bottom_pos, scale);
-	// 		// 	set_isometric_projection(&bottom_pos);
-	// 		// 	draw_line(mlx_ptr, win_ptr, pos, bottom_pos);
-	// 		// }
-	// 		printf("[%d][%d], ", i, j);
-	//         mlx_pixel_put(mlx_ptr, win_ptr, (pos.x) + 300, (pos.y) + 300, 0x00FFFF);
-	// 		j++;
+	// 		temp = ft_strdup(pos_str[i]);
+	// 		data = set_pos(i, j, ft_atoi(temp));
+	// 		ft_lstadd_back(&lst, ft_lstnew(data));
+	// 		// printf("pos: %d\n", ft_atoi(pos_str[i]));
+	// 		i++;
 	// 	}
-	// 	printf("\n");
-	// 	i++;
-    //  }
-	mlx_loop(mlx_ptr);
-	return (0);
+	// 	stack->max_x = i;	
+	// 	free(read_line);
+	// 	// free(pos_str);
+	// 	j++;
+	// }
+	// stack->max_y = j;
+	// stack->top = lst;
+	// printf("msp: %d, %d\n", stack->max_x, stack->max_y);
+	// // ft_lstiter(stack->top, show_lst);
+    // // lst = stack->top;
+	// map = create_map(stack->max_x, stack->max_y);
+	
+	// // ft_lstiter(stack->top, show_lst);
+	// // stack_to_map(stack, map);
+	// // show_map(map, stack->max_x,stack->max_y);
+
+    // int scale = 30;
+	// i = 0;
+	// j = 0;
+    // // while(i < stack->max_y)
+    // // {
+	// // 	j = 0;
+	// // 	while(j < stack->max_x)
+	// // 	{
+	// // 	    t_pos pos;
+	// // 		t_pos next_pos;
+	// // 		t_pos bottom_pos;	
+
+  	// // 	    pos = map[i][j].pos;
+	// // 		//선긋기	
+	// // 		set_scale(&pos, scale);
+    // //         set_isometric_projection(&pos);
+			
+	// // 		if (j < stack->max_x-1 )
+	// // 		{
+	// // 			next_pos = map[i][j+1].pos;
+	// // 			set_scale(&next_pos, scale);
+	// // 			set_isometric_projection(&next_pos);
+	// // 			draw_line(mlx_ptr, win_ptr, pos, next_pos);
+	// // 		}
+	// // 		if(i  < stack->max_y - 1)
+	// // 		{
+	// // 			bottom_pos = map[i+1][j].pos;
+	// // 			set_scale(&bottom_pos, scale);
+	// // 			set_isometric_projection(&bottom_pos);
+	// // 			draw_line(mlx_ptr, win_ptr, pos, bottom_pos);
+	// // 		}
+	// // 		printf("[%d][%d], ", i, j);
+	// //         mlx_pixel_put(mlx_ptr, win_ptr, (pos.x) + 300, (pos.y) + 300, 0x00FFFF);
+	// // 		j++;
+	// // 	}
+	// // 	printf("\n");
+	// // 	i++;
+    // //  }
+	// mlx_loop(mlx_ptr);
+	// return (0);
 }
