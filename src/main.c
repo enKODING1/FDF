@@ -224,35 +224,13 @@ void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
     }
 }
 
-// args
-
-int		valid_args(char **argv)
-{
-	int map_x_length;
-	// int map_y_length;			
-	int i;
-
-	map_x_length = get_map_x_length(argv[1]);
-	// map_y_length = get_map_y_length(argv);
-	i = 1;
-
-	while(argv[i])	
-	{
-		if (get_map_x_length(argv[i]) != map_x_length)	
-			return 0;
-		if ()
-	}
-
-	return 1;		
-}
-
-int		get_map_x_length(char *argv)
+int		get_map_x_length(char **map)
 {
 		int i;
 		
 		i = 0;
-		while(argv[i] != '\0')
-			i++;
+		while(map[i])	
+			i++;	
 		return i;
 }
 
@@ -267,8 +245,84 @@ int		get_map_y_length(char **argv)
 		return i;
 }
 
- 
 
+void view_matrix(char **matrix)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while(matrix[i])
+	{
+		printf("[%s] ", matrix[i]);	
+		i++;
+	}
+}
+void    free_matrix(char **matrix)
+{
+        int     i;
+
+        if (!matrix)
+                return ;
+        i = 0; 
+        while (matrix[i])
+        {
+                free(matrix[i]);
+                matrix[i] = NULL;
+                i++;
+        }
+        free(matrix);
+        matrix = NULL;
+}
+
+// args
+int		valid_args(char *file_name)
+{
+	int fd;
+	int map_x_length;
+	int prev_x_length;
+	int flag;
+	char *read_line;
+	char **split_line;
+	char *temp;
+
+	fd = open(file_name, O_RDONLY);	
+	read_line = get_next_line(fd);
+	map_x_length = -1;	
+	prev_x_length = -1;
+	flag = 1;
+	while(read_line)
+	{
+		temp = ft_strtrim(read_line, "\n");
+		split_line = ft_split(temp, ' ');	
+		map_x_length = get_map_x_length(split_line);
+		view_matrix(split_line);
+		printf("\n");
+		if(prev_x_length != -1 && prev_x_length != map_x_length)
+			flag = 1;
+		free(temp);	
+		free_matrix(split_line);	
+		free(read_line);		
+		prev_x_length = map_x_length;
+		read_line = get_next_line(fd);	
+	}
+	free(read_line);
+	printf("working!\n");
+	if (flag)
+		return 1;
+	return 0;		
+}
+ 
+int		check_format(char *file_name)
+{
+	char *start;	
+	
+	start = ft_strrchr(file_name, '.');
+	if(ft_strncmp(start, ".fdf", 4))
+		return 1;
+	return 0;
+}
 
 int	main(int argc, char **argv)
 {
@@ -287,8 +341,10 @@ int	main(int argc, char **argv)
 	if (argc < 2 || argc > 2)
 		return (0);
 
-	if (valid_args(argv))
+
+	if (!valid_args(argv[1]))
 	{
+		printf("failed!\n");
 		return 0;	
 	}
 
@@ -332,7 +388,7 @@ int	main(int argc, char **argv)
 	
 	// // ft_lstiter(stack->top, show_lst);
 	// // stack_to_map(stack, map);
-	// // show_map(map, stack->max_x,stack->max_y);
+	// // show_map(map, stack->max_x,stack->max_y)미설정;
 
     // int scale = 30;
 	// i = 0;
