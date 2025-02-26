@@ -122,6 +122,7 @@ void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
     }
 }
 
+
 t_pos	*set_pos(int x, int y, int z)
 {
 	t_pos	*pos;

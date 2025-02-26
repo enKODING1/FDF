@@ -103,7 +103,6 @@ int		get_map_y_length(char **map)
 		return i;
 }
 
-
 void view_matrix(char **matrix)
 {
 	int i;

@@ -2,7 +2,7 @@ CC = gcc -g
 # CFLAGS = -Wall -Wextra -Werror
 NAME = fdf
 SOURCES = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_checker.c \
-		  ./src/map/map_draw_utils.c ./src/map/map_utils.c \
+		  ./src/map/map_draw_utils.c ./src/map/map_utils.c ./src/map/map_core.c \
 		  ./src/mem/mem_utils.c \
 		  ./src/main.c
 OBJECTS = $(SOURCES:.c=.o)

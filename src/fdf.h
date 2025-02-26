@@ -30,6 +30,7 @@ int		valid_map(char *file_name);
 int is_valid_integer(const char *nptr);
 
 /*maps*/
+int    create_fdf(char *file_name);
 void   rotation_x(t_pos *pos, double theta);
 void    rotation_y(t_pos *pos, double theta);
 void    rotation_z(t_pos *pos, double theta);
