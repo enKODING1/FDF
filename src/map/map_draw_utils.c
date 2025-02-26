@@ -68,7 +68,7 @@ void	set_scale(t_pos *pos, int scale)
 }
 
 
-void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
+void draw_line(void *mlx_ptr, void *win_ptr, t_fdf start, t_fdf end)
 {
     int dx;
     int dy;
@@ -80,32 +80,32 @@ void draw_line(void *mlx_ptr, void *win_ptr, t_pos start, t_pos end)
     int y;
     int color = 0x00FFFF;  // 기본 색상 설정
 
-    dx = abs(end.x - start.x);
-    dy = -abs(end.y - start.y);
+    dx = abs(end.pos.x - start.pos.x);
+    dy = -abs(end.pos.y - start.pos.y);
     
-    if (start.x < end.x)
+    if (start.pos.x < end.pos.x)
         sx = 1;
     else
         sx = -1;
     
-    if (start.y < end.y)
+    if (start.pos.y < end.pos.y)
         sy = 1;
     else
         sy = -1;
     
     err = dx + dy;
-    x = start.x;
-    y = start.y;
+    x = start.pos.x;
+    y = start.pos.y;
     
     while (1)
     {
         // // 화면 범위 검사 (예시로 1920x1080 사용, 오프셋 +300 적용)
         // if (x >= 0 && x < 1920 && y >= 0 && y < 1080)
-            mlx_pixel_put(mlx_ptr, win_ptr, x + 300, y + 300, color);
+            mlx_pixel_put(mlx_ptr, win_ptr, x + (WIN_WIDTH/MARGIN_RIGHT), y + (WIN_HEIGHT/MARGIN_BOTTOM), color);
         // else
         //     break;
         
-        if (x == end.x && y == end.y)
+        if (x == end.pos.x && y == end.pos.y)
             break;
         
         e2 = 2 * err;

@@ -2,7 +2,6 @@
 #include "get_next_line.h"
 #include <fcntl.h>
 
-
 int		valid_map(char *file_name)
 {
 	int fd;
@@ -34,15 +33,14 @@ int		valid_map(char *file_name)
 			flag = 0;
 		}
 
-		free(temp);	
+		free_arr(temp);	
 		free_matrix(split_line);	
-		free(read_line);		
+		free_arr(read_line);		
 		prev_x_length = map_x_length;
 		read_line = get_next_line(fd);	
 	}
-	free(read_line);
-	// printf("working!\n");
-	printf("flag: %d\n", flag);
+	free_arr(read_line);
+	close(fd);
 	if (flag)
 		return 1;
 	return 0;		

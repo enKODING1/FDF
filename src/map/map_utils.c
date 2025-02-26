@@ -9,13 +9,13 @@ int is_valid_elements(char **elements)
 	while(elements[i])
 	{
 		j = 0;
-		printf("[%s]", elements[i]);
+		// printf("[%s]", elements[i]);
 		// number,color 가 아닐 경우 처리
 		if (!is_valid_integer(elements[i]))
 			return 0;
 		i++;
 	}
-	printf("\n");
+	// printf("\n");
 	return 1;
 }
 
@@ -33,33 +33,6 @@ t_fdf **	create_map(int x, int y)
 	}
 
 	return map;
-}
-
-
-void	stack_to_map(t_stack *stack, t_fdf **map)
-{
-	int i;
-	int j;
-	t_list *lst;	
-
-	i = 0;
-	j = 0;
-	lst = stack->top;
-	while(i < stack->max_y)
-	{
-		j = 0;
-		while(j < stack->max_x)
-		{
-			printf("[%d][%d], ", i, j);
-			map[i][j].pos.x = ((t_pos *)lst->content)->x;
-			map[i][j].pos.y = ((t_pos *)lst->content)->y;
-			map[i][j].pos.z = ((t_pos *)lst->content)->z;
-			lst = lst->next;
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
 }
 
 void show_map(t_fdf **map, int x, int y)
@@ -87,8 +60,13 @@ int		get_map_x_length(char **map)
 		int i;
 		
 		i = 0;
-		while(map[i])	
-			i++;	
+
+		while(map[i])
+		{
+			// printf("[%s]", map[i]);
+			i++;
+		}
+		// printf("\n");
 		return i;
 }
 
@@ -126,4 +104,63 @@ void	show_lst(void *pos)
 	printf("[%d, %d, %d]", ((t_pos *)pos)->x, ((t_pos *)pos)->y,
 		((t_pos *)pos)->z);
     // printf("%d ", ((t_pos *)pos)->z);
+}
+
+void 	set_map_size(char *file_name, int *x, int *y)
+{
+	int fd;
+	char *read_line;
+	char *trim_line;
+	char **split_line;
+
+	fd = open(file_name, O_RDONLY);
+	read_line = get_next_line(fd);
+	while(read_line)	
+	{
+		printf("%s", read_line);
+		trim_line = ft_strtrim(read_line, "\n");
+		split_line = ft_split(trim_line, ' ');
+		if (*x == 0)
+			*x = get_map_x_length(split_line);
+		free_arr(read_line);
+		free_arr(trim_line);
+		free_matrix(split_line);
+		read_line = get_next_line(fd);
+		*y += 1;
+	}
+	close(fd);
+}
+
+void	set_fdf_map(t_fdf **map, char *file_name)
+{
+	int fd;
+	int x;
+	int y;
+	char *read_line;
+	char *trim_line;
+	char **split_line;
+
+	fd = open(file_name, O_RDONLY);
+	read_line = get_next_line(fd);
+	x = 0;
+	y = 0;
+	while(read_line)
+	{
+		trim_line = ft_strtrim(read_line, "\n");
+		split_line = ft_split(trim_line, ' ');
+		while (split_line[x])	
+		{
+			map[y][x].pos.x = x;
+			map[y][x].pos.y = y;
+			map[y][x].pos.z = ft_atoi(split_line[x]);
+			x++;
+		}
+		x=0;
+		y++;
+		free_arr(read_line);
+		free_arr(trim_line);
+		free_matrix(split_line);
+		read_line = get_next_line(fd);
+	}
+	close(fd);
 }

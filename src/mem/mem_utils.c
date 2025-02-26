@@ -16,3 +16,9 @@ void    free_matrix(char **matrix)
         free(matrix);
         matrix = NULL;
 }
+
+void    free_arr(void *arr)
+{
+        free(arr);
+        arr = NULL;
+}

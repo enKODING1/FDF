@@ -1,96 +1,187 @@
 #include "fdf.h"
 
+/* 헬퍼 함수 프로토타입 */
+static void init_mlx_and_window(t_mlx_env *env);
+static void get_map_dimensions(char *file_name, int *x, int *y);
+static void create_and_read_map(char *file_name, t_map_data *map);
+static void render_map(t_mlx_env *env, t_map_data *map);
+static void process_point(t_mlx_env *env, t_fdf point);
+static void draw_adjacent_lines(t_mlx_env *env, t_map_data *map, int i, int j);
+
 int create_fdf(char *file_name)
 {
-   int		fd;
+    int		fd;
+    int     x;
+    int     y;
+    int     i;
+    int     j;
 	char	*read_line;
+    char    *trim_line;
+    char    **split_line;
 	void	*mlx_ptr;
-	char	**pos_str;
-	t_list	*lst;
-	t_stack	*stack;
+    void    *win_ptr;
 	t_pos	*data;
-	int		j;
-	int		i;
-	char	*temp;
 	t_fdf	**map; 
-    void *win_ptr;
-    stack = malloc(sizeof(t_stack));
-	if (!stack)
-		return (0);
-	stack->top = lst;
-    lst = NULL;
-	fd = open(file_name, O_RDONLY);
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 1920, 1080, "title");
-	j = 0;
-	while (1)
-	{
-		read_line = get_next_line(fd);
-		if (!read_line)
-			break ;
-		pos_str = ft_split(read_line, ' ');
-		i = 0;
-		while (pos_str[i] != NULL)
-		{
-			temp = ft_strdup(pos_str[i]);
-			data = set_pos(i, j, ft_atoi(temp));
-			ft_lstadd_back(&lst, ft_lstnew(data));
-			// printf("pos: %d\n", ft_atoi(pos_str[i]));
-			i++;
-		}
-		stack->max_x = i;	
-		free(read_line);
-		// free(pos_str);
-		j++;
-	}
-	stack->max_y = j;
-	stack->top = lst;
-	printf("msp: %d, %d\n", stack->max_x, stack->max_y);
-	ft_lstiter(stack->top, show_lst);
-    lst = stack->top;
-	map = create_map(stack->max_x, stack->max_y);
-	
-	ft_lstiter(stack->top, show_lst);
-	stack_to_map(stack, map);
-	show_map(map, stack->max_x,stack->max_y);
 
-    int scale = 30;
-	i = 0;
-	j = 0;
-    while(i < stack->max_y)
+	mlx_ptr = mlx_init();
+	win_ptr = mlx_new_window(mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "title");
+    x = 0;
+    y = 0;
+    set_map_size(file_name, &x, &y);
+    printf("x: %d, y: %d\n", x, y);
+    map = create_map(x, y);
+    set_fdf_map(map, file_name);
+    show_map(map, x, y);
+
+    i = 0;
+
+    while(i < y)
     {
 		j = 0;
-		while(j < stack->max_x)
+		while(j < x)
 		{
-		    t_pos pos;
-			t_pos next_pos;
-			t_pos bottom_pos;	
+		    t_fdf curr;
+			t_fdf next;
+			t_fdf bottom;	
 
-  		    pos = map[i][j].pos;
+  		    curr = map[i][j];
 			//선긋기	
-			set_scale(&pos, scale);
-            set_isometric_projection(&pos);
+			set_scale(&curr.pos, MAP_SCALE);
+            set_isometric_projection(&curr.pos);
 			
-			if (j < stack->max_x-1 )
+			if (j < x-1 )
 			{
-				next_pos = map[i][j+1].pos;
-				set_scale(&next_pos, scale);
-				set_isometric_projection(&next_pos);
-				draw_line(mlx_ptr, win_ptr, pos, next_pos);
+				next = map[i][j+1];
+				set_scale(&next.pos, MAP_SCALE);
+				set_isometric_projection(&next.pos);
+				draw_line(mlx_ptr, win_ptr, curr, next);
 			}
-			if(i  < stack->max_y - 1)
+			if(i  < y - 1)
 			{
-				bottom_pos = map[i+1][j].pos;
-				set_scale(&bottom_pos, scale);
-				set_isometric_projection(&bottom_pos);
-				draw_line(mlx_ptr, win_ptr, pos, bottom_pos);
+				bottom = map[i+1][j];
+				set_scale(&bottom.pos, MAP_SCALE);
+				set_isometric_projection(&bottom.pos);
+				draw_line(mlx_ptr, win_ptr, curr, bottom);
 			}
-			printf("[%d][%d], ", i, j);
-	        mlx_pixel_put(mlx_ptr, win_ptr, (pos.x) + 300, (pos.y) + 300, 0x00FFFF);
+	        mlx_pixel_put(mlx_ptr, win_ptr, (curr.pos.x) + (WIN_WIDTH/MARGIN_RIGHT), (curr.pos.y) + (WIN_HEIGHT/MARGIN_BOTTOM), 0x00FFFF);
 			j++;
 		}
-		printf("\n");
+		// printf("\n");
 		i++;
      }
 	mlx_loop(mlx_ptr);
+
+    // mlx_destroy_display(mlx_ptr);
+    // mlx_destroy_window(mlx_ptr, win_ptr);
+}
+
+
+
+
+
+#include "fdf.h"
+
+typedef struct s_mlx_env
+{
+    void    *mlx_ptr;
+    void    *win_ptr;
+}           t_mlx_env;
+
+typedef struct s_map_data
+{
+    int     width;
+    int     height;
+    t_fdf   **map;
+}           t_map_data;
+
+
+int create_fdf(char *file_name)
+{
+    t_mlx_env   env;
+    t_map_data  map_data;
+
+    init_mlx_and_window(&env);
+    get_map_dimensions(file_name, &map_data.width, &map_data.height);
+    create_and_read_map(file_name, &map_data);
+    render_map(&env, &map_data);
+    mlx_loop(env.mlx_ptr);
+    return (0);
+}
+
+/* MLX 초기화 및 윈도우 생성 */
+static void init_mlx_and_window(t_mlx_env *env)
+{
+    env->mlx_ptr = mlx_init();
+    env->win_ptr = mlx_new_window(env->mlx_ptr, 
+                                WIN_WIDTH, 
+                                WIN_HEIGHT, 
+                                "FDF Projection");
+}
+
+/* 맵 차원 계산 */
+static void get_map_dimensions(char *file_name, int *x, int *y)
+{
+    set_map_size(file_name, x, y);
+    printf("Map dimensions: x:%d, y:%d\n", *x, *y);
+}
+
+/* 맵 생성 및 데이터 읽기 */
+static void create_and_read_map(char *file_name, t_map_data *map)
+{
+    map->map = create_map(map->width, map->height);
+    set_fdf_map(map->map, file_name);
+    show_map(map->map, map->width, map->height);
+}
+
+/* 맵 렌더링 핸들러 */
+static void render_map(t_mlx_env *env, t_map_data *map)
+{
+    for (int i = 0; i < map->height; i++)
+    {
+        for (int j = 0; j < map->width; j++)
+        {
+            process_point(env, map->map[i][j]);
+            draw_adjacent_lines(env, map, i, j);
+        }
+    }
+}
+
+/* 개별 포인트 처리 */
+static void process_point(t_mlx_env *env, t_fdf point)
+{
+    t_pos transformed = point.pos;
+    
+    set_scale(&transformed, MAP_SCALE);
+    set_isometric_projection(&transformed);
+    mlx_pixel_put(env->mlx_ptr, env->win_ptr,
+                transformed.x + (WIN_WIDTH/MARGIN_RIGHT),
+                transformed.y + (WIN_HEIGHT/MARGIN_BOTTOM),
+                0x00FFFF);
+}
+
+/* 인접 점 연결선 그리기 */
+static void draw_adjacent_lines(t_mlx_env *env, t_map_data *map, int i, int j)
+{
+    t_fdf   curr = map->map[i][j];
+    t_fdf   next;
+    t_fdf   bottom;
+
+    if (j < map->width - 1)
+    {
+        next = map->map[i][j+1];
+        set_scale(&curr.pos, MAP_SCALE);
+        set_scale(&next.pos, MAP_SCALE);
+        set_isometric_projection(&curr.pos);
+        set_isometric_projection(&next.pos);
+        draw_line(env->mlx_ptr, env->win_ptr, curr, next);
+    }
+    if (i < map->height - 1)
+    {
+        bottom = map->map[i+1][j];
+        set_scale(&curr.pos, MAP_SCALE);
+        set_scale(&bottom.pos, MAP_SCALE);
+        set_isometric_projection(&curr.pos);
+        set_isometric_projection(&bottom.pos);
+        draw_line(env->mlx_ptr, env->win_ptr, curr, bottom);
+    }
 }
