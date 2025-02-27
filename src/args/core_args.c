@@ -6,7 +6,7 @@
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:53:29 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 18:53:30 by skang            ###   ########.fr       */
+/*   Updated: 2025/02/27 21:11:23 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,14 @@ int	process_map_line(char *line, int *prev_x_length)
 	int		is_valid;
 
 	is_valid = 1;
+	map_x_length = 0;
 	temp = ft_strtrim(line, "\n");
 	split_line = ft_split(temp, ' ');
+	if (!split_line)
+	{
+		free_arr(temp);
+		return (0);
+	}
 	map_x_length = get_map_x_length(split_line);
 	if (!check_line_length(*prev_x_length, map_x_length))
 		is_valid = 0;
@@ -56,7 +62,6 @@ int	validate_map_file(int fd)
 		free_arr(read_line);
 		read_line = get_next_line(fd);
 	}
-	free_arr(read_line);
 	return (is_valid);
 }
 

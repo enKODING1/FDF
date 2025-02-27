@@ -6,91 +6,79 @@
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 21:12:49 by skang             #+#    #+#             */
-/*   Updated: 2024/10/18 23:12:00 by skang            ###   ########.fr       */
+/*   Updated: 2025/02/27 21:05:13 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-static int	get_character_count(char *s, char c)
+static int	word_count(const char *s, char c)
 {
-	int	index;
-
-	index = 0;
-	while (s[index] != '\0')
-	{
-		if (s[index] == c)
-			break ;
-		index++;
-	}
-	return (index);
-}
-
-static int	get_separator_count(char *s, char c)
-{
-	int	index;
 	int	count;
+	int	in_word;
 
-	index = 0;
 	count = 0;
-	while (s[index] != '\0')
+	in_word = 0;
+	while (*s)
 	{
-		if (s[index] == c)
+		if (*s != c && !in_word)
+		{
+			in_word = 1;
 			count++;
-		index++;
+		}
+		else if (*s == c)
+			in_word = 0;
+		s++;
 	}
 	return (count);
 }
 
-static char	**free_ptr(char **ptr, int col_size)
+static char	**free_all(char **result, int idx)
 {
 	int	i;
 
-	i = -1;
-	while (++i < col_size)
-	{
-		free(ptr[i]);
-	}
-	free(ptr);
+	i = 0;
+	while (i < idx)
+		free(result[i++]);
+	free(result);
 	return (NULL);
 }
 
-static char	**write_split(char const *s, char **s_ptr, int separator_len,
-		char c)
+static char	*get_next_word(const char *s, char c, size_t *pos)
 {
-	int	index;
-	int	charactor_count;
-	int	s_ptr_idx;
+	size_t	start;
+	size_t	end;
 
-	index = 0;
-	charactor_count = 0;
-	s_ptr_idx = -1;
-	while (separator_len-- > 0)
-	{
-		charactor_count = get_character_count((char *)&s[index], c);
-		if (charactor_count > 0)
-			s_ptr[++s_ptr_idx] = ft_substr((char *)&s[index], 0,
-					(size_t)charactor_count);
-		if (s_ptr[s_ptr_idx] == NULL)
-			return (free_ptr(&s_ptr[0], get_separator_count((char *)s, c) + 2));
-		index = index + charactor_count + 1;
-	}
-	s_ptr[++s_ptr_idx] = NULL;
-	return (s_ptr);
+	while (s[*pos] == c)
+		(*pos)++;
+	start = *pos;
+	while (s[*pos] && s[*pos] != c)
+		(*pos)++;
+	end = *pos;
+	return (ft_substr(s, start, end - start));
 }
 
 char	**ft_split(char const *s, char c)
 {
-	int		separator_len;
-	char	**s_ptr;
+	char	**result;
+	size_t	pos;
+	int		words;
+	int		i;
 
 	if (!s)
 		return (NULL);
-	separator_len = get_separator_count((char *)s, c) + 1;
-	s_ptr = (char **)malloc(sizeof(char *) * (separator_len + 1));
-	if (!s_ptr)
+	words = word_count(s, c);
+	result = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!result)
 		return (NULL);
-	if (write_split(s, s_ptr, separator_len, c) == NULL)
-		return (NULL);
-	return (s_ptr);
+	i = 0;
+	pos = 0;
+	while (i < words)
+	{
+		result[i] = get_next_word(s, c, &pos);
+		if (!result[i])
+			return (free_all(result, i));
+		i++;
+	}
+	result[words] = NULL;
+	return (result);
 }
