@@ -104,6 +104,7 @@ void		load_map_data(char *file_name, t_fdf ***map, int *x, int *y);
 
 /*mem*/
 void		free_matrix(char **matrix);
+void		free_map(t_fdf **map);
 void		free_arr(void *arr);
 
 /*error*/

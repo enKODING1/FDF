@@ -29,6 +29,23 @@ void	free_matrix(char **matrix)
 	matrix = NULL;
 }
 
+void	free_map(t_fdf **map)
+{
+	int	i;
+
+	if (!map)
+		return ;
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		map[i] = NULL;
+		i++;
+	}
+	free(map);
+	map = NULL;
+}
+
 void	free_arr(void *arr)
 {
 	free(arr);

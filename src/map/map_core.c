@@ -22,7 +22,8 @@ int	create_fdf(char *file_name)
 	load_map_data(file_name, &info.map, &info.x, &info.y);
 	render_map(&info);
 	mlx_loop(info.mlx_ptr);
-	mlx_destroy_display(info.mlx_ptr);
 	mlx_destroy_window(info.mlx_ptr, info.win_ptr);
+	mlx_destroy_display(info.mlx_ptr);
+	free_map(info.map);	
 	return (0);
 }
