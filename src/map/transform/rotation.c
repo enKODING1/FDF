@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   transform.c                                        :+:      :+:    :+:   */
+/*   rotation.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:34:36 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 19:34:37 by skang            ###   ########.fr       */
+/*   Updated: 2025/02/27 19:48:00 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,4 @@ void	set_isometric_projection(t_pos *pos)
 	horizontal_axis = 35.264;
 	rotation_z(pos, vertical_axis);
 	rotation_x(pos, horizontal_axis);
-}
-
-void	transform_point(t_pos *pos)
-{
-	set_scale(pos, MAP_SCALE);
-	set_isometric_projection(pos);
 }

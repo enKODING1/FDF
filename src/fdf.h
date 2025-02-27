@@ -6,7 +6,7 @@
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:54:54 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 18:54:55 by skang            ###   ########.fr       */
+/*   Updated: 2025/02/27 20:18:21 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # include "mlx.h"
 # include "mlx_int.h"
 # include <errno.h>
-# include <stdio.h>
 # include <math.h>
+# include <stdio.h>
 
 typedef struct s_pos
 {
@@ -50,6 +50,22 @@ typedef struct s_render_info
 	int		x;
 	int		y;
 }			t_render_info;
+
+typedef struct s_line_params
+{
+	int		dx;
+	int		dy;
+	int		sx;
+	int		sy;
+	int		err;
+}			t_line_params;
+
+typedef struct s_draw_info
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	int		color;
+}			t_draw_info;
 
 /*args*/
 int			valid_format(char *file_name);
@@ -76,16 +92,15 @@ void		rotation_z(t_pos *pos, double theta);
 void		set_isometric_projection(t_pos *pos);
 void		transform_point(t_pos *pos);
 
-
 /*draw utils*/
-void	draw_horizontal_line(t_render_info *info, int i, int j);
- void	draw_vertical_line(t_render_info *info, int i, int j);
- void	draw_point(t_render_info *info, int i, int j);
- void	process_map_point(t_render_info *info, int i, int j);
- void	render_map(t_render_info *info);
+void		draw_horizontal_line(t_render_info *info, int i, int j);
+void		draw_vertical_line(t_render_info *info, int i, int j);
+void		draw_point(t_render_info *info, int i, int j);
+void		process_map_point(t_render_info *info, int i, int j);
+void		render_map(t_render_info *info);
 
- /*map loader*/
-void	load_map_data(char *file_name, t_fdf ***map, int *x, int *y);
+/*map loader*/
+void		load_map_data(char *file_name, t_fdf ***map, int *x, int *y);
 
 /*mem*/
 void		free_matrix(char **matrix);
@@ -95,6 +110,6 @@ void		free_arr(void *arr);
 void		error(int error_type);
 
 /*mlx util*/
-void initialize_mlx(void **mlx_ptr, void **win_ptr);
+void		initialize_mlx(void **mlx_ptr, void **win_ptr);
 
 #endif

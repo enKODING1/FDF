@@ -6,7 +6,7 @@
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:55:23 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 19:34:29 by skang            ###   ########.fr       */
+/*   Updated: 2025/02/27 20:14:09 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ t_fdf	**create_map(int x, int y)
 		i++;
 	}
 	return (map);
-}
-
-int	get_map_x_length(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-	{
-		i++;
-	}
-	return (i);
 }
 
 void	set_map_size(char *file_name, int *x, int *y)
@@ -89,36 +77,43 @@ void	parse_element(t_fdf *map_element, char *element)
 	}
 }
 
+static void	process_line(t_fdf **map, char *line, int y)
+{
+	char	*trim_line;
+	char	**split_line;
+	int		x;
+
+	trim_line = ft_strtrim(line, "\n");
+	split_line = ft_split(trim_line, ' ');
+	x = 0;
+	while (split_line[x])
+	{
+		map[y][x].pos.x = x;
+		map[y][x].pos.y = y;
+		parse_element(&map[y][x], split_line[x]);
+		x++;
+	}
+	free_arr(trim_line);
+	free_matrix(split_line);
+}
+
 void	set_fdf_map(t_fdf **map, char *file_name)
 {
 	int		fd;
-	int		x;
-	int		y;
 	char	*read_line;
-	char	*trim_line;
-	char	**split_line;
+	int		y;
 
 	fd = open(file_name, O_RDONLY);
-	read_line = get_next_line(fd);
-	x = 0;
+	if (fd < 0)
+		return ;
 	y = 0;
+	read_line = get_next_line(fd);
 	while (read_line)
 	{
-		trim_line = ft_strtrim(read_line, "\n");
-		split_line = ft_split(trim_line, ' ');
-		while (split_line[x])
-		{
-			map[y][x].pos.x = x;
-			map[y][x].pos.y = y;
-			parse_element(&map[y][x], split_line[x]);
-			x++;
-		}
-		x = 0;
-		y++;
+		process_line(map, read_line, y);
 		free_arr(read_line);
-		free_arr(trim_line);
-		free_matrix(split_line);
 		read_line = get_next_line(fd);
+		y++;
 	}
 	close(fd);
 }
