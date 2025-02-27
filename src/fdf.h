@@ -6,7 +6,7 @@
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:54:54 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 20:18:21 by skang            ###   ########.fr       */
+/*   Updated: 2025/02/27 22:15:15 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define FILE_TYPE 3
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
-# define MAP_SCALE 25
+# define MAP_SCALE 2
 # define MARGIN_RIGHT 2
 # define MARGIN_BOTTOM 15
 
@@ -25,6 +25,7 @@
 # include "libft.h"
 # include "mlx.h"
 # include "mlx_int.h"
+# include <X11/keysym.h>
 # include <errno.h>
 # include <math.h>
 # include <stdio.h>
