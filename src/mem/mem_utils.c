@@ -29,14 +29,14 @@ void	free_matrix(char **matrix)
 	matrix = NULL;
 }
 
-void	free_map(t_fdf **map)
+void	free_map(t_fdf **map, int height)
 {
 	int	i;
 
 	if (!map)
 		return ;
 	i = 0;
-	while (map[i])
+	while (i < height)
 	{
 		free(map[i]);
 		map[i] = NULL;
