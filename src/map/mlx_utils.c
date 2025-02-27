@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mlx_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 20:26:24 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 18:54:41 by skang            ###   ########.fr       */
+/*   Created: 2025/02/27 19:34:32 by skang             #+#    #+#             */
+/*   Updated: 2025/02/27 19:34:33 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int argc, char **argv)
+void	initialize_mlx(void **mlx_ptr, void **win_ptr)
 {
-	if (argc < 2 || argc > 2)
-		return (0);
-	if (!valid_format(argv[1]))
-		return (0);
-	if (!valid_map(argv[1]))
-		return (0);
-	create_fdf(argv[1]);
-	return (0);
+	*mlx_ptr = mlx_init();
+	*win_ptr = mlx_new_window(*mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "fdf");
 }

@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 20:26:24 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 18:54:41 by skang            ###   ########.fr       */
+/*   Created: 2025/02/27 18:54:28 by skang             #+#    #+#             */
+/*   Updated: 2025/02/27 18:54:30 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int argc, char **argv)
+void	error(int error_type)
 {
-	if (argc < 2 || argc > 2)
-		return (0);
-	if (!valid_format(argv[1]))
-		return (0);
-	if (!valid_map(argv[1]))
-		return (0);
-	create_fdf(argv[1]);
-	return (0);
+	if (error_type == FILE_PATH)
+	{
+		ft_putstr_fd(strerror(errno), 1);
+		ft_putstr_fd("\n", 1);
+	}
+	if (error_type == INVALID_MAP)
+		ft_putstr_fd("Invalid Map\n", 1);
+	if (error_type == FILE_TYPE)
+		ft_putstr_fd("Invalid File type\n", 1);
 }

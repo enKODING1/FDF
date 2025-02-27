@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   map_loader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 20:26:24 by skang             #+#    #+#             */
-/*   Updated: 2025/02/27 18:54:41 by skang            ###   ########.fr       */
+/*   Created: 2025/02/27 19:34:24 by skang             #+#    #+#             */
+/*   Updated: 2025/02/27 19:34:24 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int argc, char **argv)
+void	load_map_data(char *file_name, t_fdf ***map, int *x, int *y)
 {
-	if (argc < 2 || argc > 2)
-		return (0);
-	if (!valid_format(argv[1]))
-		return (0);
-	if (!valid_map(argv[1]))
-		return (0);
-	create_fdf(argv[1]);
-	return (0);
+	set_map_size(file_name, x, y);
+	*map = create_map(*x, *y);
+	set_fdf_map(*map, file_name);
 }

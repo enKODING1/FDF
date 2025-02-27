@@ -1,10 +1,12 @@
 CC = gcc -g
 # CFLAGS = -Wall -Wextra -Werror
 NAME = fdf
-SOURCES = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_checker.c \
-		  ./src/map/map_draw_utils.c ./src/map/map_utils.c ./src/map/map_core.c \
+SOURCES = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_checker.c ./src/args/element_utils.c\
+		  ./src/map/map_utils.c ./src/map/map_core.c ./src/map/ft_atoi_base.c ./src/map/map_loader.c ./src/map/mlx_utils.c ./src/map/transform.c \
+		  ./src/map/draw/draw_core.c ./src/map/draw/draw_utils.c \
 		  ./src/mem/mem_utils.c \
-		  ./src/main.c
+		  ./src/main.c \
+		  ./src/error.c
 OBJECTS = $(SOURCES:.c=.o)
 
 LIBFT_DIR = ./lib/libft/
