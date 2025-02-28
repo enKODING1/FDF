@@ -18,6 +18,8 @@ int	valid_format(char *file_name)
 	int		value;
 
 	start = ft_strrchr(file_name, '.');
+	if (!start)
+		return (0);
 	if (ft_strncmp(start, ".fdf", 5) == 0)
 		return (1);
 	error(FILE_TYPE);
