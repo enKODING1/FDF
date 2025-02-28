@@ -45,6 +45,8 @@ int	is_valid_hex_color(char *str)
 			return (0);
 		i++;
 	}
+	if (i > 8)
+		return (0);
 	return (1);
 }
 
