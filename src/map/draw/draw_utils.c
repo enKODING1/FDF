@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	draw_horizontal_line(t_render_info *info, int i, int j)
+void	draw_horizontal_line(t_render_info *info, t_data *img, int i, int j)
 {
 	t_fdf	curr;
 	t_fdf	next;
@@ -23,10 +23,10 @@ void	draw_horizontal_line(t_render_info *info, int i, int j)
 	next = info->map[i][j + 1];
 	transform_point(&curr.pos);
 	transform_point(&next.pos);
-	draw_line(info->mlx_ptr, info->win_ptr, curr, next);
+	draw_line(info->mlx_ptr, info->win_ptr, img, curr, next);
 }
 
-void	draw_vertical_line(t_render_info *info, int i, int j)
+void	draw_vertical_line(t_render_info *info, t_data *img, int i, int j)
 {
 	t_fdf	curr;
 	t_fdf	bottom;
@@ -37,28 +37,16 @@ void	draw_vertical_line(t_render_info *info, int i, int j)
 	bottom = info->map[i + 1][j];
 	transform_point(&curr.pos);
 	transform_point(&bottom.pos);
-	draw_line(info->mlx_ptr, info->win_ptr, curr, bottom);
+	draw_line(info->mlx_ptr, info->win_ptr, img, curr, bottom);
 }
 
-void	draw_point(t_render_info *info, int i, int j)
+void	process_map_point(t_render_info *info, t_data *img, int i, int j)
 {
-	t_fdf	point;
-
-	point = info->map[i][j];
-	transform_point(&point.pos);
-	mlx_pixel_put(info->mlx_ptr, info->win_ptr, (point.pos.x) + (WIN_WIDTH
-			/ MARGIN_RIGHT), (point.pos.y) + (WIN_HEIGHT / MARGIN_BOTTOM),
-		point.color);
+	draw_horizontal_line(info, img, i, j);
+	draw_vertical_line(info, img, i, j);
 }
 
-void	process_map_point(t_render_info *info, int i, int j)
-{
-	draw_horizontal_line(info, i, j);
-	draw_vertical_line(info, i, j);
-	draw_point(info, i, j);
-}
-
-void	render_map(t_render_info *info)
+void	render_map(t_render_info *info, t_data *img)
 {
 	int	i;
 	int	j;
@@ -69,9 +57,11 @@ void	render_map(t_render_info *info)
 		j = 0;
 		while (j < info->x)
 		{
-			process_map_point(info, i, j);
+			process_map_point(info, img, i, j);
 			j++;
 		}
 		i++;
 	}
+
+	mlx_put_image_to_window(info->mlx_ptr, info->win_ptr, img->img, 0, 0);
 }
