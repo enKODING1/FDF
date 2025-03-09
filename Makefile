@@ -5,9 +5,10 @@ SOURCES = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_che
 		  ./src/map/map_utils.c ./src/map/map_core.c ./src/map/ft_atoi_base.c ./src/map/map_loader.c ./src/map/mlx_utils.c ./src/map/map_length.c \
 		  ./src/map/draw/draw_core.c ./src/map/draw/draw_utils.c \
 		  ./src/map/transform/rotation.c ./src/map/transform/transform.c \
+		  ./src/map/hook/hook_handler.c ./src/map/hook/hook_utils.c \
 		  ./src/mem/mem_utils.c \
 		  ./src/main.c \
-		  ./src/error.c
+		  ./src/error.c 
 OBJECTS = $(SOURCES:.c=.o)
 
 LIBFT_DIR = ./lib/libft/
