@@ -12,6 +12,13 @@
 
 #include "fdf.h"
 
+void	transform_point_(t_pos *pos, int theta)
+{
+	set_scale(pos, MAP_SCALE);
+	// set_isometric_projection(pos);
+	rotation_x(pos, theta);
+}
+
 void	draw_horizontal_line(t_render_info *info, t_data *img, int i, int j)
 {
 	t_fdf	curr;
@@ -21,8 +28,8 @@ void	draw_horizontal_line(t_render_info *info, t_data *img, int i, int j)
 		return ;
 	curr = info->map[i][j];
 	next = info->map[i][j + 1];
-	transform_point(&curr.pos);
-	transform_point(&next.pos);
+	transform_point_(&curr.pos, info->theta_x);
+	transform_point_(&next.pos, info->theta_x);
 	draw_line(info->mlx_ptr, info->win_ptr, img, curr, next);
 }
 
@@ -35,8 +42,8 @@ void	draw_vertical_line(t_render_info *info, t_data *img, int i, int j)
 		return ;
 	curr = info->map[i][j];
 	bottom = info->map[i + 1][j];
-	transform_point(&curr.pos);
-	transform_point(&bottom.pos);
+	transform_point_(&curr.pos, info->theta_x);
+	transform_point_(&bottom.pos, info->theta_x);
 	draw_line(info->mlx_ptr, info->win_ptr, img, curr, bottom);
 }
 
@@ -64,4 +71,6 @@ void	render_map(t_render_info *info, t_data *img)
 	}
 
 	mlx_put_image_to_window(info->mlx_ptr, info->win_ptr, img->img, 0, 0);
+	printf("theta: %f\n", info->theta_x);
+	info->theta_x += 10;
 }

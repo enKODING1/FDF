@@ -56,8 +56,12 @@ typedef struct s_render_info
 	void	*mlx_ptr;
 	void	*win_ptr;
 	t_fdf	**map;
+	t_data	*img;
 	int		x;
 	int		y;
+	double theta_x;
+	double theta_y;
+	double theta_z;
 }			t_render_info;
 
 typedef struct s_line_params

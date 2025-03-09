@@ -32,8 +32,9 @@ t_pos	*set_pos(int x, int y, int z)
 	return (pos);
 }
 
-void	transform_point(t_pos *pos)
-{
-	set_scale(pos, MAP_SCALE);
-	set_isometric_projection(pos);
-}
+// void	transform_point(t_pos *pos)
+// {
+// 	set_scale(pos, MAP_SCALE);
+// 	// set_isometric_projection(pos);
+// 	rotation_x(pos, );
+// }

@@ -13,6 +13,13 @@
 #include "fdf.h"
 #include <X11/keysym.h>
 
+
+void clear_image(t_data *img)
+{
+    ft_memset(img->addr, 0, WIN_WIDTH * WIN_HEIGHT * (img->bpp / 8));
+}
+
+
 int	key_hook(int keycode, t_render_info *info)
 {
 	if (keycode == XK_Escape)
@@ -23,6 +30,15 @@ int	key_hook(int keycode, t_render_info *info)
 		free_map(info->map, info->y);
 		exit(0);
 	}
+
+	if (keycode == XK_Down)
+	{
+		clear_image(info->img);
+		mlx_clear_window(info->mlx_ptr, info->win_ptr);
+		mlx_put_image_to_window(info->mlx_ptr, info->win_ptr, info->img->img, 0, 0);//이미지를 윈도우에 올린다.
+		render_map(info, info->img);
+	}
+
 	return (0);
 }
 
@@ -45,14 +61,8 @@ int	create_fdf(char *file_name)
 	img.img = mlx_new_image(info.mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_length, &img.endian);
 	load_map_data(file_name, &info.map, &info.x, &info.y);
-	render_map(&info, &img);
-	// for(int i = 0; i < 100 ; i++) {
-	// 	my_mlx_pixel_put(&img, i, i, 0x00FF0000);// 붉은색 선을 대각선으로 그린다.
-	// 	my_mlx_pixel_put(&img, 5, i, 0x00FF0000);// 붉은색 선을 세로으로 그린다.
-	// 	my_mlx_pixel_put(&img, i, 5, 0x00FF0000);// 붉은색 선을 가로으로 그린다.
-	// }
-	// mlx_put_image_to_window(info.mlx_ptr, info.win_ptr, img.img, 0, 0);//이미지를 윈도우에 올린다.
-
+	info.img = &img;
+	// render_map(&info, &img);
 	mlx_key_hook(info.win_ptr, key_hook, &info);
 	mlx_hook(info.win_ptr, DestroyNotify, StructureNotifyMask, close_hook,
 		&info);

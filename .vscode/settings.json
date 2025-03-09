@@ -2,7 +2,8 @@
     "files.associations": {
         "fcntl.h": "c",
         "fdf.h": "c",
-        "mlx_int.h": "c"
+        "mlx_int.h": "c",
+        "keysym.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
