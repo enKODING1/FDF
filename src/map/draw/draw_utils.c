@@ -12,11 +12,14 @@
 
 #include "fdf.h"
 
-void	transform_point_(t_pos *pos, int theta)
+void	transform_point_(t_pos *pos, t_render_info *info)
 {
-	set_scale(pos, MAP_SCALE);
+	set_scale(pos, info->scale);
 	// set_isometric_projection(pos);
-	rotation_x(pos, theta);
+	// printf("rotation: %f\n", rotation.theta_x);
+	rotation_z(pos, info->rotation.theta_z);
+	rotation_x(pos, info->rotation.theta_x);
+	rotation_y(pos, info->rotation.theta_y);
 }
 
 void	draw_horizontal_line(t_render_info *info, t_data *img, int i, int j)
@@ -28,9 +31,13 @@ void	draw_horizontal_line(t_render_info *info, t_data *img, int i, int j)
 		return ;
 	curr = info->map[i][j];
 	next = info->map[i][j + 1];
-	transform_point_(&curr.pos, info->theta_x);
-	transform_point_(&next.pos, info->theta_x);
-	draw_line(info->mlx_ptr, info->win_ptr, img, curr, next);
+	if (curr.pos.z != 0)
+		curr.pos.z += info->height;
+	if (next.pos.z != 0)	
+		next.pos.z += info->height; 
+	transform_point_(&curr.pos, info);
+	transform_point_(&next.pos, info);
+	draw_line(info->mlx_ptr, info->win_ptr, img, curr, next, info);
 }
 
 void	draw_vertical_line(t_render_info *info, t_data *img, int i, int j)
@@ -42,9 +49,13 @@ void	draw_vertical_line(t_render_info *info, t_data *img, int i, int j)
 		return ;
 	curr = info->map[i][j];
 	bottom = info->map[i + 1][j];
-	transform_point_(&curr.pos, info->theta_x);
-	transform_point_(&bottom.pos, info->theta_x);
-	draw_line(info->mlx_ptr, info->win_ptr, img, curr, bottom);
+	if(curr.pos.z != 0)
+		curr.pos.z += info->height;
+	if(bottom.pos.z != 0)
+		bottom.pos.z += info->height; 
+	transform_point_(&curr.pos, info);
+	transform_point_(&bottom.pos, info);
+	draw_line(info->mlx_ptr, info->win_ptr, img, curr, bottom, info);
 }
 
 void	process_map_point(t_render_info *info, t_data *img, int i, int j)
@@ -69,8 +80,5 @@ void	render_map(t_render_info *info, t_data *img)
 		}
 		i++;
 	}
-
 	mlx_put_image_to_window(info->mlx_ptr, info->win_ptr, img->img, 0, 0);
-	printf("theta: %f\n", info->theta_x);
-	info->theta_x += 10;
 }

@@ -51,17 +51,26 @@ typedef struct s_fdf
 	int		color;
 }			t_fdf;
 
+typedef struct s_rotation
+{
+	double theta_x;
+	double theta_y;
+	double theta_z;
+} t_rotation;
+
 typedef struct s_render_info
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
 	t_fdf	**map;
 	t_data	*img;
+	t_rotation rotation;
+	int 	scale;
+	int 	translate_x;
+	int 	translate_y;
 	int		x;
 	int		y;
-	double theta_x;
-	double theta_y;
-	double theta_z;
+	int		height;
 }			t_render_info;
 
 typedef struct s_line_params
@@ -89,7 +98,7 @@ int			is_valid_elements(char **elements);
 /*maps*/
 int			create_fdf(char *file_name);
 void		set_scale(t_pos *pos, int scale);
-void		draw_line(void *mlx_ptr, void *win_ptr, t_data *img, t_fdf start, t_fdf end);
+void		draw_line(void *mlx_ptr, void *win_ptr, t_data *img, t_fdf start, t_fdf end, t_render_info *info);
 t_pos		*set_pos(int x, int y, int z);
 int			is_valid_elements(char **elements);
 t_fdf		**create_map(int x, int y);

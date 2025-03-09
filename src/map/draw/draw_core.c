@@ -52,7 +52,7 @@ static void	update_position(t_line_params *params, int *x, int *y)
 	}
 }
 
-void	draw_line(void *mlx_ptr, void *win_ptr, t_data *img, t_fdf start, t_fdf end)
+void	draw_line(void *mlx_ptr, void *win_ptr, t_data *img, t_fdf start, t_fdf end, t_render_info *info)
 {
 	t_line_params	params;
 	t_draw_info		draw_info;
@@ -68,8 +68,8 @@ void	draw_line(void *mlx_ptr, void *win_ptr, t_data *img, t_fdf start, t_fdf end
 	while (1)
 	{
 	
-	if (x+MARGIN_RIGHT >= 0 && x+MARGIN_RIGHT < WIN_WIDTH && y+MARGIN_BOTTOM >= 0 && y+MARGIN_BOTTOM < WIN_HEIGHT)
-			my_mlx_pixel_put(img, x+MARGIN_RIGHT, y+MARGIN_BOTTOM, start.color);
+	if (x+info->translate_x >= 0 && x+info->translate_x < WIN_WIDTH && y+info->translate_y >= 0 && y+info->translate_y < WIN_HEIGHT)
+			my_mlx_pixel_put(img, x+info->translate_x, y+info->translate_y, start.color);
 		else
 				break;	
 		if (x == end.pos.x && y == end.pos.y)
