@@ -32,6 +32,7 @@ void	init_handler(t_render_info *info)
 	info->scale = MAP_SCALE;
 	info->translate_x = MARGIN_RIGHT;
 	info->translate_y = MARGIN_BOTTOM;
+	info->height = 1;
 }
 
 int	create_fdf(char *file_name)

@@ -47,7 +47,7 @@ void	scale_handler(int keycode, t_render_info *info)
 	if (keycode == XK_KP_Subtract)
 		info->scale -= 1;
 	if (keycode == XK_bracketleft)
-		info->height -= 10;
+		info->height -= 1;
 	if (keycode == XK_bracketright)
-		info->height += 10;
+		info->height += 1;
 }

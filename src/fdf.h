@@ -6,7 +6,7 @@
 /*   By: skang <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:54:54 by skang             #+#    #+#             */
-/*   Updated: 2025/03/10 12:39:14 by skang            ###   ########.fr       */
+/*   Updated: 2025/03/10 13:27:44 by skang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 # define FILE_TYPE 3
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
-# define MAP_SCALE 20
-# define MARGIN_RIGHT 300
-# define MARGIN_BOTTOM 0
+# define MAP_SCALE 7
+# define MARGIN_RIGHT 920
+# define MARGIN_BOTTOM 240
 
 # include "get_next_line.h"
 # include "libft.h"

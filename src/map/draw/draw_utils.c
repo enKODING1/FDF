@@ -22,9 +22,9 @@ void	draw_horizontal_line(t_render_info *info, int i, int j)
 	curr = info->map[i][j];
 	next = info->map[i][j + 1];
 	if (curr.pos.z != 0)
-		curr.pos.z += info->height;
+		curr.pos.z *= info->height;
 	if (next.pos.z != 0)
-		next.pos.z += info->height;
+		next.pos.z *= info->height;
 	transform_point(&curr.pos, info);
 	transform_point(&next.pos, info);
 	draw_line(info, curr, next);
@@ -40,9 +40,9 @@ void	draw_vertical_line(t_render_info *info, int i, int j)
 	curr = info->map[i][j];
 	bottom = info->map[i + 1][j];
 	if (curr.pos.z != 0)
-		curr.pos.z += info->height;
+		curr.pos.z *= info->height;
 	if (bottom.pos.z != 0)
-		bottom.pos.z += info->height;
+		bottom.pos.z *= info->height;
 	transform_point(&curr.pos, info);
 	transform_point(&bottom.pos, info);
 	draw_line(info, curr, bottom);
