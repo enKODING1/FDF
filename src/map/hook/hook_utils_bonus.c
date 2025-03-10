@@ -38,4 +38,5 @@ int	key_hook(int keycode, t_render_info *info)
 int	close_hook(t_render_info *info)
 {
 	destroy_all(info);
+	return (0);
 }

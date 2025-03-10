@@ -55,14 +55,10 @@ static void	update_position(t_line_params *params, int *x, int *y)
 void	draw_line(t_render_info *info, t_fdf start, t_fdf end)
 {
 	t_line_params	params;
-	t_draw_info		draw_info;
 	int				x;
 	int				y;
 
 	initialize_line_params(start, end, &params);
-	draw_info.mlx_ptr = info->mlx_ptr;
-	draw_info.win_ptr = info->win_ptr;
-	draw_info.color = start.color;
 	x = start.pos.x;
 	y = start.pos.y;
 	while (1)

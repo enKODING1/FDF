@@ -15,6 +15,7 @@
 
 void	destroy_all(t_render_info *info)
 {
+	(void)info;
 	mlx_destroy_image(info->mlx_ptr, info->img->img);
 	mlx_destroy_window(info->mlx_ptr, info->win_ptr);
 	mlx_destroy_display(info->mlx_ptr);

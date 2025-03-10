@@ -29,8 +29,6 @@ int	is_valid_integer(const char *nptr)
 {
 	int		operator;
 	long	result;
-	long	max;
-	long	min;
 
 	operator = 1;
 	result = 0;

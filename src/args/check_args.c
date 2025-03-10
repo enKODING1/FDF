@@ -15,7 +15,6 @@
 int	valid_format(char *file_name)
 {
 	char	*start;
-	int		value;
 
 	start = ft_strrchr(file_name, '.');
 	if (!start)

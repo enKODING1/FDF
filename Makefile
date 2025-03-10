@@ -1,9 +1,8 @@
-CC = gcc -g
-# CFLAGS = -Wall -Wextra -Werror
+CC = cc -g
+CFLAGS = -Wall -Wextra -Werror
 NAME = fdf
 NAME_BONUS = fdf_bonus
 
-# 기존 소스 파일
 SOURCES = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_checker.c ./src/args/element_utils.c\
 		  ./src/map/map_utils.c ./src/map/map_core.c ./src/map/ft_atoi_base.c ./src/map/map_loader.c ./src/map/mlx_utils.c ./src/map/map_length.c \
 		  ./src/map/draw/draw_core.c ./src/map/draw/draw_utils.c \
@@ -13,7 +12,6 @@ SOURCES = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_che
 		  ./src/main.c \
 		  ./src/error.c 
 
-# 보너스 소스 파일 (기존 파일 + 보너스 파일)
 SOURCES_BONUS = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_checker.c ./src/args/element_utils.c\
 		  ./src/map/map_utils.c ./src/map/map_core.c ./src/map/ft_atoi_base.c ./src/map/map_loader.c ./src/map/mlx_utils.c ./src/map/map_length.c \
 		  ./src/map/draw/draw_core.c ./src/map/draw/draw_utils.c \
