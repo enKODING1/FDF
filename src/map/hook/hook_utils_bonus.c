@@ -17,10 +17,21 @@ void	clear_image(t_data *img)
 	ft_memset(img->addr, 0, WIN_WIDTH * WIN_HEIGHT * (img->bpp / 8));
 }
 
+void	draw(t_render_info *info)
+{
+	clear_image(info->img);
+	mlx_clear_window(info->mlx_ptr, info->win_ptr);
+	render_map(info);
+}
+
 int	key_hook(int keycode, t_render_info *info)
 {
 	if (keycode == XK_Escape)
 		destroy_all(info);
+	rotation_handler(keycode, info);
+	translate_handler(keycode, info);
+	scale_handler(keycode, info);
+	draw(info);
 	return (0);
 }
 

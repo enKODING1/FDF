@@ -13,18 +13,6 @@
 #include "fdf.h"
 #include <X11/keysym.h>
 
-void	clear_image(t_data *img)
-{
-	ft_memset(img->addr, 0, WIN_WIDTH * WIN_HEIGHT * (img->bpp / 8));
-}
-
-void	draw(t_render_info *info)
-{
-	clear_image(info->img);
-	mlx_clear_window(info->mlx_ptr, info->win_ptr);
-	render_map(info);
-}
-
 void	destroy_all(t_render_info *info)
 {
 	mlx_destroy_image(info->mlx_ptr, info->img->img);
