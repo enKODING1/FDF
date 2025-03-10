@@ -1,7 +1,7 @@
 CC = gcc -g
 # CFLAGS = -Wall -Wextra -Werror
 NAME = fdf
-NAME_BONUS = fdf
+NAME_BONUS = fdf_bonus
 
 # 기존 소스 파일
 SOURCES = ./src/args/check_args.c ./src/args/core_args.c ./src/args/overflow_checker.c ./src/args/element_utils.c\
@@ -59,12 +59,10 @@ $(LIBFT_LIB):
 	make -C $(LIBFT_DIR)
 	make bonus -C $(LIBFT_DIR)
 
-# 일반 오브젝트 파일 컴파일 규칙
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ \
 		-I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MINILIBX_DIR) -I $(FDF_DIR)
 
-# 보너스 오브젝트 파일 컴파일 규칙
 %_bonus.o: %_bonus.c
 	$(CC) $(CFLAGS) -c $< -o $@ \
 		-I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MINILIBX_DIR) -I $(FDF_DIR)
