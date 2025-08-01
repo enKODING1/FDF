@@ -31,24 +31,28 @@ FDF_DIR = ./src/
 
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 GNL_LIB = $(GNL_DIR)/libgnl.a
+MINILIBX_LIB = $(MINILIBX_DIR)/libmlx.a
 
 all: $(NAME)
 
 bonus: $(NAME_BONUS)
 
-$(NAME): $(GNL_LIB) $(LIBFT_LIB) $(OBJECTS)
+$(NAME): $(MINILIBX_LIB) $(GNL_LIB) $(LIBFT_LIB) $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -lm -o $(NAME) \
 		-I$(LIBFT_DIR) -I$(GNL_DIR) -I$(MINILIBX_DIR) -I$(FDF_DIR)\
 		-L$(MINILIBX_DIR) -lmlx -lXext -lX11 \
 		-L$(LIBFT_DIR) -lft \
 		-L$(GNL_DIR) -lgnl
 
-$(NAME_BONUS): $(GNL_LIB) $(LIBFT_LIB) $(OBJECTS_BONUS)
+$(NAME_BONUS): $(MINILIBX_LIB) $(GNL_LIB) $(LIBFT_LIB) $(OBJECTS_BONUS)
 	$(CC) $(CFLAGS) $(OBJECTS_BONUS) -lm -o $(NAME_BONUS) \
 		-I$(LIBFT_DIR) -I$(GNL_DIR) -I$(MINILIBX_DIR) -I$(FDF_DIR)\
 		-L$(MINILIBX_DIR) -lmlx -lXext -lX11 \
 		-L$(LIBFT_DIR) -lft \
 		-L$(GNL_DIR) -lgnl
+
+$(MINILIBX_LIB):
+	make -C $(MINILIBX_DIR)
 
 $(GNL_LIB):
 	make -C $(GNL_DIR)
@@ -56,6 +60,7 @@ $(GNL_LIB):
 $(LIBFT_LIB):
 	make -C $(LIBFT_DIR)
 	make bonus -C $(LIBFT_DIR)
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@ \
@@ -68,11 +73,13 @@ $(LIBFT_LIB):
 clean:
 	make clean -C $(LIBFT_DIR)
 	make clean -C $(GNL_DIR)
+	make clean -C $(MINILIBX_DIR)
 	rm -f $(OBJECTS) $(OBJECTS_BONUS)
 
 fclean: clean
 	make fclean -C $(LIBFT_DIR)
 	make fclean -C $(GNL_DIR)
+	make clean -C $(MINILIBX_DIR)
 	rm -f $(NAME) $(NAME_BONUS)
 
 re: fclean all
